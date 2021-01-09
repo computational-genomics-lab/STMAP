@@ -1,4 +1,4 @@
-# MGAPipe
+# STMAP
 Installation Instructions
 ================================
   
