@@ -7,7 +7,7 @@ To install Metagenome Analysis Pipeline, you must have a minimum of 8 GiB free d
 To provide an easier way to install, we provide a miniconda based installer.
 Installation also requires **pre-instaled** ``git``, ``gcc``, ``cpp`` and ``zlib1g-dev``.
   
-    git clone https://github.com/computational-genomics-lab/MGAPipe.git
+    git clone https://github.com/computational-genomics-lab/STMAP.git
     cd MGAPipe
     chmod 755 INSTALL.sh
     ./INSTALL.sh
@@ -17,10 +17,10 @@ Installation also requires **pre-instaled** ``git``, ``gcc``, ``cpp`` and ``zlib
 After successful installation, close the current terminal. 
 In a new terminal. source the bashrc file:  ``source ~/.bashrc``
 
-All the third party tools installed using conda are available at $HOME/MGAPipe/ [default location]
+All the third party tools installed using conda are available at $HOME/STMAP/ [default location]
 or the user specified location during the installation process.
 
-The script to run Metagenome Analysis Pipeline is metagenome.py is available inside the MGAPipe folder, that you cloned from github.
+The script to run Metagenome Analysis Pipeline is metagenome.py is available inside the STMAP folder, that you cloned from github.
 
 Input Files
 ===========
