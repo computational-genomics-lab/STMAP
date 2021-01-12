@@ -89,7 +89,7 @@ Commands to run Metagenome Analysis Workflow
 --------------------------------------------
  
 
-metagenome.py <<command>> - -help
+metagenome.py ``command`` --help
 
 .. code-block:: none
 
