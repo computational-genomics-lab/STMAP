@@ -736,76 +736,24 @@ Differential Enrichment Analysis of de-replicated genome bins can be done using 
 
 
 
-.. code-block:: none  
 
-    [RNASeq-Analysis]$ rnaseq.py alignmentFreeDEA <arguments> --local-scheduler
-
-    argument               type      Description
-    
-   [required arguments]  
-
-    --pre-process-reads     str       Run Quality Control Analysis of the RNASeq reads or Not
-                                      [yes / no]
-
-                                      If yes, cleanReads command will be run with default parameters.
-                                      If no, quality control analysis will not be done, instead re-pair.sh or reformat.sh 
-                                      script of bbmap will be run based on paired-end or single-end reads.
-
-   --quant-method           str       Read quantification method
-                                      [salmon / kallisto]
-
-   --dea-method             str       Method to be used for differential expression analysis. 
-                                      [deseq2 / edger]
-
-   --reference-condition    str       Reference biological condition. 
-                                      example: control
-
-   --local-scheduler
-
-    [optional arguments] 
-
-   --attribute-type        str       Atrribute type in GTF annotation
-                                     choose from {gene_id, transcript_id}
-
-   --strand-type           int       perform strand-specific read counting.
-                                     choose from [0: unstranded,
-                                                  1: stranded,
-                                                  2: reversely-stranded]
-
-   --report-name           str       Name of the differential expression analysis report
-                                     Default: DEA_Report
-
-   --factor-of-intrest     str       Factor of intrest column of the target file
-                                     Default: conditions
-
-   --fit-type              str       mean-variance relationship. 
-                                     Choices: {local, parametric, mean}
-
-   --size-factor           str       method to estimate the size factors. Choices: {shorth, median} 
-
-   --result-tag            str       Tag need to be apended to result file
-                                     Default: treated_vs_control
     
     
 
 B. Marker Gene based Taxonomy Profiling
 ----------------------------------------
 
-1. Taxonomy profiling from metagenomic shotgun sequencing data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    1. Taxonomy profiling from metagenomic shotgun sequencing data
 
 
-Taxonomy profiling of individual samples can be done using command ``compositionProfiling``
+    Taxonomy profiling of individual samples can be done using command ``compositionProfiling``
 
-|
-|  **Requirements**
-|  1. Pre execution of ``configureProject`` command 
-|  2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
-|  
-|  
 
-.. code-block:: none   
-
+    **Requirements**
+    1. Pre execution of ``configureProject`` command 
+    2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
+  
+ 
     [MetagenomeAnalysis]$ metagenome.py  compositionProfiling <arguments> --local-scheduler
 
     argument               type      Description
@@ -817,32 +765,26 @@ Taxonomy profiling of individual samples can be done using command ``composition
                                      If no, quality control analysis will not be done, instead re-pair.sh or reformat.sh 
                                      script of bbmap will be run based on paired-end or single-end reads.
 
-   --local-scheduler
 
 
 
-|  **Example**
-|  **Composition profiling with read quality control analysis** 
-|
-|   [MetagenomeAnalysis]$ metagenome.py  compositionProfiling  \
-|                                       --pre-process-reads  ``yes``                                    
-|                                       --local-scheduler
-|
-|
-|  Note: 1. Output folder in the name of ``profiled_samples`` will be created at ``$PWD/metagenome_demo_analysis/``, which contains the taxonomy profile of individual samples
-|  
-|      
+  **Example**
+  **Composition profiling with read quality control analysis** 
+  
+    [MetagenomeAnalysis]$ metagenome.py  compositionProfiling  \
+                                       --pre-process-reads  ``yes``                                    
+                                       --local-scheduler
 
-2. Generate plots using hclust, graphlan and ampvis
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-|
-|  **Requirements**
-|  1. Pre execution of ``configureProject`` command 
-|  2. Availability of ``luigi.cfg`` file in ``parent folder``,``metagenome_group.tsv`` and ``pe_samples.lst`` files inside the ``config`` folder.
-|  
-|  
 
-.. code-block:: none   
+    Note: 1. Output folder in the name of ``profiled_samples`` will be created at ``$PWD/metagenome_demo_analysis/``, which contains the taxonomy profile of individual     samples
+    
+
+    2. Generate plots using hclust, graphlan and ampvis
+
+
+  **Requirements**
+     1. Pre execution of ``configureProject`` command 
+     2. Availability of ``luigi.cfg`` file in ``parent folder``,``metagenome_group.tsv`` and ``pe_samples.lst`` files inside the ``config`` folder.
 
     [MetagenomeAnalysis]$ metagenome.py  compositionProfiling <arguments> --local-scheduler
 
@@ -863,16 +805,16 @@ Taxonomy profiling of individual samples can be done using command ``composition
 
 
 
-|  **Example**
-|  **Composition profiling with read quality control analysis** 
-|
-|   [MetagenomeAnalysis]$ metagenome.py  profileTaxonomy  \
-|                                       --pre-process-reads  ``yes``  
-|                                       --condition-column ``conditions`` \                                  
-|                                       --local-scheduler
-|
-|
-|  Note: 1. Output folder in the name of ``figures`` will be created at ``$PWD/metagenome_demo_analysis/``, which contains the images
-|  
-|      
+    **Example**
+    **Composition profiling with read quality control analysis** 
+
+     [MetagenomeAnalysis]$ metagenome.py  profileTaxonomy  \
+                                       --pre-process-reads  ``yes``  
+                                       --condition-column ``conditions`` \                                  
+                                       --local-scheduler
+
+
+    Note: 1. Output folder in the name of ``figures`` will be created at ``$PWD/metagenome_demo_analysis/``, which contains the images
+  
+      
 
