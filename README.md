@@ -591,52 +591,48 @@ Condition-based or condition-free de-replication of individual genome bins can b
     --local-scheduler
 
 
-|  
-|  **4.a. Metagenome assembly with read quality control analysis followed by genome binning, bin refinement and condition_free de-replication** 
-|
-|  [MetagenomeAnalysis]$ metagenome.py  dRepBins  \
-|                                       --pre-process-reads  ``yes``   \
-|                                       --dRep-method ``condition_free`` \
-|                                       --checkM-method ``taxonomy_wf``  \
-|                                       --contamination ``10`` \
-|                                       --completeness ``80`` \
-|                                       --local-scheduler
-|
-|  Note: 1. Output folder in the name of ``dReplicated_bins_condition_free will`` be created at ``$PWD/metagenome_demo_analysis/dRep_bins/dReplicated_bins_condition_free/dereplicated_genomes`` which contains the de-replicated genomes
-| 
+  
+  **4.a. Metagenome assembly with read quality control analysis followed by genome binning, bin refinement and condition_free de-replication** 
+
+     [MetagenomeAnalysis]$ metagenome.py  dRepBins  \
+                                       --pre-process-reads  ``yes``   \
+                                       --dRep-method ``condition_free`` \
+                                       --checkM-method ``taxonomy_wf``  \
+                                       --contamination ``10`` \
+                                       --completeness ``80`` \
+                                       --local-scheduler
+
+    Note: Output folder in the name of ``dReplicated_bins_condition_free will`` be created at ``$PWD/metagenome_demo_analysis/dRep_bins/dReplicated_bins_condition_free /dereplicated_genomes`` which contains the de-replicated genomes
+
  
-|  
-|  **4.b. Metagenome assembly with read quality control analysis followed by genome binning, bin refinement and condition_based de-replication** 
-|
-|  [MetagenomeAnalysis]$ metagenome.py  dRepBins  \
-|                                       --pre-process-reads  ``yes``   \
-|                                       --dRep-method ``condition_based`` \
-|                                       --reference-condition ``buccal_mucosa`` \
-|                                       --contrast-condition  ``tongue_dorsum`` \
-|                                       --checkM-method ``taxonomy_wf``  \
-|                                       --contamination ``10`` \
-|                                       --completeness ``80`` \
-|                                       --local-scheduler
-|
-|  Note: 1. Output folder in the name of ``dReplicated_bins_condition_free will`` be created at ``$PWD/metagenome_demo_analysis/dRep_bins/dReplicated_bins_condition_based/`` which contains the de-replicated genomes
-| 
+  
+    **4.b. Metagenome assembly with read quality control analysis followed by genome binning, bin refinement and condition_based de-replication** 
+
+    [MetagenomeAnalysis]$ metagenome.py  dRepBins  \
+                                       --pre-process-reads  ``yes``   \
+                                       --dRep-method ``condition_based`` \
+                                       --reference-condition ``buccal_mucosa`` \
+                                       --contrast-condition  ``tongue_dorsum`` \
+                                       --checkM-method ``taxonomy_wf``  \
+                                       --contamination ``10`` \
+                                      --completeness ``80`` \
+                                       --local-scheduler
+
+    Note: 1. Output folder in the name of ``dReplicated_bins_condition_free will`` be created at ``$PWD/metagenome_demo_analysis/dRep_bins/dReplicated_bins_condition_based/`` which contains the de-replicated genomes
+ 
 
 
 
 5. annotate de-replicated genome bins
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Annotation of condition-based or condition-free de-replicated genome bins can be done using command ``annotateGenomeBins``
 
-|
-|  **Requirements**
-|  1. ``annotateGenomeBins`` must be run after condition_based or condition_free de-replication of genome bins 
-|  1. Pre execution of ``configureProject`` command 
-|  2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
-|  3. If user opted for condition_based de-replication, availability of ``genomes_dRep_by_condition.lst`` file containing the list of genome bins, inside the ``$PWD/metagenome_demo_analysis/dRep_bins`` folder
-|  4. If user opted for condition_based de-replication, availability of ``genomes_dRep_regardless_condition.lst`` file containing the list of genome bins inside the ``$PWD/metagenome_demo_analysis/dRep_bins`` folder
-|
-
-.. code-block:: none   
+    **Requirements**
+    1. ``annotateGenomeBins`` must be run after condition_based or condition_free de-replication of genome bins 
+    2. Pre execution of ``configureProject`` command 
+    3. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
+    4. If user opted for condition_based de-replication, availability of ``genomes_dRep_by_condition.lst`` file containing the list of genome bins, inside the ``$PWD/metagenome_demo_analysis/dRep_bins`` folder
+    5. If user opted for condition_based de-replication, availability of ``genomes_dRep_regardless_condition.lst`` file containing the list of genome bins inside the ``$PWD/metagenome_demo_analysis/dRep_bins`` folder
 
     [MetagenomeAnalysis]$ metagenome.py  dRepBins <arguments> --local-scheduler
 
@@ -656,46 +652,41 @@ Annotation of condition-based or condition-free de-replicated genome bins can be
     --local-scheduler
 
 
-|  **Example Run**
-|  **Metagenome annotation after condition_free de-replication of genome bins** 
-|
-|
-|  [MetagenomeAnalysis]$ metagenome.py  annotateGenomeBins  \
-|                                       --pre-process-reads  ``yes``   \
-|                                       --dRep-method condition_free \                                 
-|                                       --local-scheduler
-|
-|  Note: 1. Output folder in the name of ``prokka_condition_free`` will be created at ``$PWD/metagenome_demo_analysis/prokka_condition_free``
-|
+    Example Run
+    Metagenome annotation after condition_free de-replication of genome bins** 
 
-|  **Example Run**
-|  **Metagenome annotation after condition_based de-replication of genome bins** 
-|
-|
-|  [MetagenomeAnalysis]$ metagenome.py  annotateGenomeBins  \
-|                                       --pre-process-reads  ``yes``   \
-|                                       --dRep-method condition_based \                                 
-|                                       --local-scheduler
-|
-|  Note: 1. Output folder in the name of ``prokka_condition_based`` will be created at ``$PWD/metagenome_demo_analysis/prokka_condition_based``
-|
+
+    [MetagenomeAnalysis]$ metagenome.py  annotateGenomeBins  \
+                                       --pre-process-reads  ``yes``   \
+                                       --dRep-method condition_free \                                 
+                                       --local-scheduler
+
+    Note: 1. Output folder in the name of ``prokka_condition_free`` will be created at ``$PWD/metagenome_demo_analysis/prokka_condition_free``
+
+
+    Example Run
+    Metagenome annotation after condition_based de-replication of genome bins** 
+
+
+    [MetagenomeAnalysis]$ metagenome.py  annotateGenomeBins  \
+                                       --pre-process-reads  ``yes``   \
+                                       --dRep-method condition_based \                                 
+                                       --local-scheduler
+
+    Note: Output folder in the name of ``prokka_condition_based`` will be created at ``$PWD/metagenome_demo_analysis/prokka_condition_based``
+
 |      
 
 
 
-6. Differential Enrichment Analysis of de-replicated genome bins
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    6. Differential Enrichment Analysis of de-replicated genome bins
 
-Differential Enrichment Analysis of de-replicated genome bins can be done using command ``deaGenomeBins``
+    Differential Enrichment Analysis of de-replicated genome bins can be done using command ``deaGenomeBins``
 
-|
-|  **Requirements**
-|  1. Pre execution of ``configureProject`` command 
-|  2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
-|  3. Availability of ``metagenome_group.tsv`` file inside the ``config`` folder 
-|
-
-.. code-block:: none   
+    Requirements
+         1. Pre execution of ``configureProject`` command 
+         2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
+         3. Availability of ``metagenome_group.tsv`` file inside the ``config`` folder 
 
     [MetagenomeAnalysis]$ metagenome.py  deaGenomeBins <arguments> --local-scheduler
 
@@ -782,7 +773,7 @@ B. Marker Gene based Taxonomy Profiling
     2. Generate plots using hclust, graphlan and ampvis
 
 
-  **Requirements**
+    Requirements
      1. Pre execution of ``configureProject`` command 
      2. Availability of ``luigi.cfg`` file in ``parent folder``,``metagenome_group.tsv`` and ``pe_samples.lst`` files inside the ``config`` folder.
 
