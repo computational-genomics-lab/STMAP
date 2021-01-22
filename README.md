@@ -442,7 +442,7 @@ A. Genome Resolved Metagenimics
 
 
 
-  **Example Run 1**
+  
   **Metagenome assembly with read quality control analysis** 
 
      [MetagenomeAnalysis]$ metagenome.py  metagenomeAssembly  \
@@ -451,7 +451,6 @@ A. Genome Resolved Metagenimics
 
 
 
-  **Example Run 2**
   **Metagenome assembly with out read quality control analysis** 
 
 
@@ -468,7 +467,7 @@ A. Genome Resolved Metagenimics
 Binning of individual assembled samples can be done using command ``genomeBinning``
 
 
-  **Requirements**
+    Requirements
   
     1. Pre execution of ``configureProject`` command 
     2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
@@ -488,7 +487,7 @@ Binning of individual assembled samples can be done using command ``genomeBinnin
    --local-scheduler
 
 
-  **Example Run 2**
+ 
   **Metagenome assembly with read quality control analysis followed by genome binning** 
 
 
@@ -506,7 +505,7 @@ Binning of individual assembled samples can be done using command ``genomeBinnin
     Refinement of individual genome bins can be done using command ``binRefinement``
 
 
-  **Requirements**
+    Requirements
   
     1. Pre execution of ``configureProject`` command 
     2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
@@ -526,7 +525,6 @@ Binning of individual assembled samples can be done using command ``genomeBinnin
    --local-scheduler
 
 
-  **Example Run**
   **Metagenome assembly with read quality control analysis followed by genome binning and bin refinement** 
 
 
@@ -706,11 +704,6 @@ Binning of individual assembled samples can be done using command ``genomeBinnin
                                                                      FDR 2-stage Benjamini-Krieger-Yekutieli: fdr_tsbky]
     --local-scheduler
 
-
-
-
-
-    
     
 
 B. Marker Gene based Taxonomy Profiling
@@ -739,9 +732,6 @@ B. Marker Gene based Taxonomy Profiling
                                      script of bbmap will be run based on paired-end or single-end reads.
 
 
-
-
-  **Example**
   **Composition profiling with read quality control analysis** 
   
     [MetagenomeAnalysis]$ metagenome.py  compositionProfiling  \
