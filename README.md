@@ -115,13 +115,13 @@ metagenome.py ``command`` --help
 
 
 
-1. Prepare Project
--------------------
+Prepare Project
+===============
+
 
 A. Single (or) multiple samples with out any conditions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------------------------
 
-.. code-block:: none
     
     STEP 1: copy the luigi.cfg template file to the present working directory
 
@@ -190,10 +190,9 @@ A. Single (or) multiple samples with out any conditions
     ---------------
 
 
-
-
 B. Single (or) Multiple Samples with conditions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------------------------
+
 To design and perform a Metagenome Analysis experiment, a Project need to be prepaired using the ``configureProject`` command.
 The current working directory must contain a template of luigi.cfg file.
 
@@ -347,7 +346,7 @@ Usage:  projectConfig.py -h
 
 .. code-block:: none                                      
 
-   [MetagenomeAnalysis]$ metagenome.py cleanReads <arguments> --local-scheduler
+    [MetagenomeAnalysis]$ metagenome.py cleanReads <arguments> --local-scheduler
     
     arguments               type      Description
       
@@ -425,7 +424,6 @@ A. Genome Resolved Metagenimics
 
 1. Metagenome Assembly using megaHIT
 
-
         Assembly of individual samples can be done using command ``metagenomeAssembly``
 
         Requirements
@@ -452,37 +450,37 @@ A. Genome Resolved Metagenimics
 
 
 
-|  **Example Run 1**
-|  **Metagenome assembly with read quality control analysis** 
-|
-|   [MetagenomeAnalysis]$ metagenome.py  metagenomeAssembly  \
-|                                       --pre-process-reads  ``yes``                                    
-|                                       --local-scheduler
-|
+  **Example Run 1**
+  **Metagenome assembly with read quality control analysis** 
+
+     [MetagenomeAnalysis]$ metagenome.py  metagenomeAssembly  \
+                                       --pre-process-reads  ``yes``                                    
+                                       --local-scheduler
 
 
-|  **Example Run 2**
-|  **Metagenome assembly with out read quality control analysis** 
-|
-|
-|  [MetagenomeAnalysis]$ metagenome.py  metagenomeAssembly  \
-|                                       --pre-process-reads  ``yes``                                    
-|                                       --local-scheduler
-|
-|  Note: Output folder in the name of MGAssembly will be created at $PWD/metagenome_demo_analysis/MGAssembly
-|  MGAsembly folder contains the sub-folders by the name of the samples and each sub-folder contains the resultant assembly
-|
+
+  **Example Run 2**
+  **Metagenome assembly with out read quality control analysis** 
+
+
+    [MetagenomeAnalysis]$ metagenome.py  metagenomeAssembly  \
+                                       --pre-process-reads  ``yes``                                    
+                                       --local-scheduler
+
+     Note: Output folder in the name of MGAssembly will be created at $PWD/metagenome_demo_analysis/MGAssembly
+     MGAsembly folder contains the sub-folders by the name of the samples and each sub-folder contains the resultant assembly
+
 
 2. Binning of assembled contigs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Binning of individual assembled samples can be done using command ``genomeBinning``
 
-|
-|  **Requirements**
-|  1. Pre execution of ``configureProject`` command 
-|  2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
-|  
-|  
+
+  **Requirements**
+    1. Pre execution of ``configureProject`` command 
+    2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
+  
+  
 
 .. code-block:: none   
 
@@ -500,29 +498,29 @@ Binning of individual assembled samples can be done using command ``genomeBinnin
    --local-scheduler
 
 
-|  **Example Run 2**
-|  **Metagenome assembly with read quality control analysis followed by genome binning** 
-|
-|
-|  [MetagenomeAnalysis]$ metagenome.py  genomeBinning  \
-|                                       --pre-process-reads  ``yes``                                    
-|                                       --local-scheduler
-|
-|  Note: Output folder in the name of binning will be created at ``$PWD/metagenome_demo_analysis/binning``
-|  ``binning`` folder contains the sub-folders by the name of the samples and each sub-folder contains the resultant genome bins
-|
+  **Example Run 2**
+  **Metagenome assembly with read quality control analysis followed by genome binning** 
+
+
+    [MetagenomeAnalysis]$ metagenome.py  genomeBinning  \
+                                       --pre-process-reads  ``yes``                                    
+                                       --local-scheduler
+
+    Note: Output folder in the name of binning will be created at ``$PWD/metagenome_demo_analysis/binning``
+  ``binning`` folder contains the sub-folders by the name of the samples and each sub-folder contains the resultant genome bins
+
 
 
 3. Refinement of genome bins
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Refinement of individual genome bins can be done using command ``binRefinement``
 
-|
-|  **Requirements**
-|  1. Pre execution of ``configureProject`` command 
-|  2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
-|  
-|  
+  Refinement of individual genome bins can be done using command ``binRefinement``
+
+
+  **Requirements**
+  1. Pre execution of ``configureProject`` command 
+  2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
+  
+  
 
 .. code-block:: none   
 
@@ -540,29 +538,29 @@ Refinement of individual genome bins can be done using command ``binRefinement``
    --local-scheduler
 
 
-|  **Example Run**
-|  **Metagenome assembly with read quality control analysis followed by genome binning and bin refinement** 
-|
-|
-|  [MetagenomeAnalysis]$ metagenome.py  binRefinement  \
-|                                       --pre-process-reads  ``yes``                                    
-|                                       --local-scheduler
-|
-|  Note: Output folder in the name of binning will be created at ``$PWD/metagenome_demo_analysis/bin_refinement``
-|  ``bin_refinement`` folder contains the sub-folders by the name of the samples and each sub-folder contains the resultant refined genome bins. refineM tool is used for refinement of genome bins
-|
+  **Example Run**
+  **Metagenome assembly with read quality control analysis followed by genome binning and bin refinement** 
+
+
+    [MetagenomeAnalysis]$ metagenome.py  binRefinement  \
+                                       --pre-process-reads  ``yes``                                    
+                                       --local-scheduler
+
+    Note: Output folder in the name of binning will be created at ``$PWD/metagenome_demo_analysis/bin_refinement``
+  ``bin_refinement``folder contains the sub-folders by the name of the samples and each sub-folder contains the resultant refined genome bins. refineM tool is used      for refinement of genome bins
+
 
 
 4. de-replication of genome bins
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Condition-based or condition-free de-replication of individual genome bins can be done using command ``dRepBins``
 
-|
-|  **Requirements**
-|  1. Pre execution of ``configureProject`` command 
-|  2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
-|  3. Availability of ``metagenome_group.tsv`` file inside the ``config`` folder if user opts for condition_based de-replication
-|  
+      Condition-based or condition-free de-replication of individual genome bins can be done using command ``dRepBins``
+
+
+  **Requirements**
+    1. Pre execution of ``configureProject`` command 
+   2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config`` folder.
+  3. Availability of ``metagenome_group.tsv`` file inside the ``config`` folder if user opts for condition_based de-replication
+  
 
 .. code-block:: none   
 
