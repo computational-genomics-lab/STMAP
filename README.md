@@ -267,9 +267,7 @@ Usage:  projectConfig.py -h
     
 
 **Run Example**
-
-.. code-block:: none
-   
+ 
     mkdir MetagenomeAnalysis
     cd MetagenomeAnalysis
     Note: MetagenomeAnalysis folder must contain the luigi.cfg template file
@@ -289,7 +287,6 @@ Usage:  projectConfig.py -h
                         pac:  pacbio
                         ]
 
-.. code-block:: none
 
     Successful run of the projectConfig.py script with appropriate parameters will generate 
 
@@ -314,14 +311,13 @@ Usage:  projectConfig.py -h
     The ``metagenome_condition.tsv`` file contains the sample names with their associated environmental conditions, which will be used for condition based genome   binning and differential enrichment analysis. Kindly check the generated files and modify if required
   
 
-    2. Raw reads quality assessment
---------------------------------
+   **2. Raw reads quality assessment
+
 
          Before running any of the Metagenome Analysis Workflow commands, a project must be configured using ``configureProject`` command.
          The parent forlder must have the luigi.cfg file, in which the globalparameters are defined.
-         Running any of the  Metagenome Analysis Workflow commands without generating the project folder and luigi.cfg file will give rise to   ``luigi.parameter.MissingParameterException``
+         Running any of the  Metagenome Analysis Workflow commands without generating the project folder and luigi.cfg file will give rise to     ``luigi.parameter.MissingParameterException``
 
-.. code-block:: none
 
     **Steps**
     1. Run Prepare Projcet with project name ``metagenome_demo_analysis`` as discussed before 
@@ -335,8 +331,8 @@ Usage:  projectConfig.py -h
 
 
 
-    3. Raw samples quality control
-     ------------------------------
+   **3. Raw samples quality control
+     
     Quality control analysis of the raw samples can be done using command ``preProcessSamples``
 
     Requirements
@@ -344,7 +340,6 @@ Usage:  projectConfig.py -h
        2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config``.
 
 
-.. code-block:: none                                      
 
     [MetagenomeAnalysis]$ metagenome.py cleanReads <arguments> --local-scheduler
     
@@ -407,7 +402,6 @@ Usage:  projectConfig.py -h
 
 **Example Run**
 
-.. code-block:: none
 
     [MetagenomeAnalysis]$ metagenome.py cleanReads \
                             --cleanFastq-min-average-quality 15 \
