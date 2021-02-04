@@ -8,7 +8,7 @@ To provide an easier way to install, we provide a miniconda based installer.
 Installation also requires **pre-instaled** ``git``, ``gcc``, ``cpp`` and ``zlib1g-dev``.
   
     git clone https://github.com/computational-genomics-lab/STMAP.git
-    cd MGAPipe
+    cd STMAP
     chmod 755 INSTALL.sh
     ./INSTALL.sh
 
