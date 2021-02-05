@@ -237,27 +237,19 @@ fi
 
 
 
-tools=(r-base r-devtools r-argparse r-lattice r-gridextra r-optparse r-usethis r-rlang r-stringi)
-for a in ${tools[@]}; do
-echo ""
-echo -e "\e[1;34m installing $a ...\e[0m" 
-echo ""
-  conda install -c anaconda -c bioconda -c conda-forge -c r -c ursky -c geronimp -y $a
-done
-echo "export PATH=\"$$InstallDir/bin\":\$PATH" >> ~/.bashrc
+#tools=(r-base r-devtools r-argparse r-lattice r-gridextra r-optparse r-usethis r-rlang r-stringi)
+#for a in ${tools[@]}; do
+#echo ""
+#echo -e "\e[1;34m installing $a ...\e[0m" 
+#echo ""
+#  conda install -c anaconda -c bioconda -c conda-forge -c r -c ursky -c geronimp -y $a
+#done
+#echo "export PATH=\"$$InstallDir/bin\":\$PATH" >> ~/.bashrc
 
-#echo "install.packages('stringi', repos = \"http://cran.us.r-project.org\")" |  /home/sutripa/MGAPipe/bin/R --no-save
-
-
-
-if [[ $EntryPoint ]]; then
-    cd $InstallDir
-    #mkdir "R_libs"
-    #echo "local_lib_path = \"$InstallDir/R_libs/\"" > INSTALL.R
-    echo "remotes::install_github('MadsAlbertsen/ampvis2')" |  $InstallDir/bin/R --no-save 
-fi
-
-
+#if [[ $EntryPoint ]]; then
+#    cd $InstallDir
+#    echo "remotes::install_github('MadsAlbertsen/ampvis2')" |  $InstallDir/bin/R --no-save 
+#fi
 
 piptools=(drep checkm-genome enrichm)
 for a in ${piptools[@]}; do
