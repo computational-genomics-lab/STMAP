@@ -7,7 +7,7 @@ fi
 
 # Name of application to install
 echo ""
-echo -e "\e[1;34mChecking dependencies for MGApipe installation ...\e[0m"  2>&1 | tee -a $LOGFILE
+echo -e "\e[1;34mChecking dependencies for STMAP installation ...\e[0m"  2>&1 | tee -a $LOGFILE
 echo ""
 
 sleep 2s;
@@ -66,24 +66,10 @@ fi
 #Packages through git, wget and Sourseforge
 THIS_DIR=$(DIRNAME=$(dirname "$0"); cd "$DIRNAME"; pwd)
 BASE_DIR=$(pwd)
-chmod 755 $BASE_DIR/*.sh
-#chmod 755 $BASE_DIR/*.py
-UTILITY=$BASE_DIR/MGAPipe/tasks/utility
-MGANALYSIS=$BASE_DIR/MGAPipe/tasks/
-READCleaning=$BASE_DIR/MGAPipe/tasks/readCleaning
-
-echo "export PATH=\"$UTILITY\":\$PATH" >> ~/.bashrc 
-echo "export PATH=\"$MGANALYSIS\":\$PATH" >> ~/.bashrc 
-echo "export PATH=\"$READCleaning\":\$PATH" >> ~/.bashrc 
-
-#TEMPENVFILE=$BASE_DIR/.conda_environment.yml
-#ENVFILE=$BASE_DIR/.environment.yml
-#cp $TEMPENVFILE $ENVFILE
-#ENVFILE=$BASE_DIR/.environment.yml
 
 THIS_FILE=$(basename "$0")
 THIS_PATH="$THIS_DIR/$THIS_FILE"
-PREFIX=$HOME/MGApipe/
+PREFIX=$HOME/STMAP/
 
 sleep 2s;
 
@@ -152,11 +138,11 @@ if [ ! -d $PREFIX ]; then
 fi
 #cd $PREFIX
 
-AppName="MGAPipe"
+AppName="STMAP"
 # Set your project's install directory name here
 InstallDir=$PREFIX
 #EntryPoint="YourApplicationName"
-EntryPoint="MGAPipe"
+EntryPoint="STMAP"
 
 echo
 echo "Installing $AppName"  
@@ -209,19 +195,22 @@ END
 
 #Add Script Directory
 
-#Add Prefix to env file
-#echo "prefix: $PREFIX" >> $ENVFILE
+BASE_TASKS=$BASE_DIR/tasks/
+cp -ar $BASE_TASKS $InstallDir
+cp $BASE_DIR/metagenome.py $InstallDir/metagenome.py
+
+chmod 755 $BASE_DIR/*.sh
+#chmod 755 $BASE_DIR/*.py
+ANNOTATION=$InstallDir/tasks/annotation
+MG_ANALYSIS=$InstallDir/tasks/metagenome
+READCleaning=$InstallDir/tasks/metagenome/readCleaning
+UTILITY=$InstallDir/tasks/metagenome/utility
 
 
-#cp -ar $UTILITY $PREFIX
-#utility_dir=$PREFIX/utility
-#chmod -R 755 $utility_dir
-#echo "export PATH=\$PATH:$utility_dir" >> ~/.bashrc
-
-#cp -ar $DEA_SCRIPTS $PREFIX
-#dea_scripts_dir=$PREFIX/deaRscripts
-#chmod -R 755 $dea_scripts_dir
-#echo "export PATH=\$PATH:$dea_scripts_dir" >> ~/.bashrc
+echo "export PATH=\"$ANNOTATION\":\$PATH" >> ~/.bashrc 
+echo "export PATH=\"$UTILITY\":\$PATH" >> ~/.bashrc 
+echo "export PATH=\"$MG_ANALYSIS\":\$PATH" >> ~/.bashrc 
+echo "export PATH=\"$READCleaning\":\$PATH" >> ~/.bashrc 
 
 
 # Add Entry Point to the path
@@ -286,13 +275,12 @@ else
 
 fi
 
-
-tools=(luigi pandas coverm megahit metaphlan biom-format metabat2 prokka mcl hmmer diamond prodigal parallel openmp mmseqs2)
+tools=(R r-gridextra r-optparse mcl hmmer diamond prodigal parallel openmp mmseqs2 moreutils luigi pandas coverm megahit metaphlan biom-format metabat2 prokka)
 for a in ${tools[@]}; do
 echo ""
 echo -e "\e[1;34m installing $a ...\e[0m" 
 echo ""
-conda install -c anaconda -c bioconda -c conda-forge -c r -c ursky -c geronimp -y $a
+conda install -c bioconda -c conda-forge -c r -c ursky -c geronimp -y $a
 done
 echo "export PATH=\"$$InstallDir/bin\":\$PATH" >> ~/.bashrc
 
