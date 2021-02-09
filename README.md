@@ -14,6 +14,7 @@ Installation also requires **pre-instaled** ``git``, ``gcc``, ``cpp`` and ``zlib
 
     
 **Post Installation Instructions**
+
 After successful installation, close the current terminal. 
 In a new terminal. source the bashrc file:  ``source ~/.bashrc``
 
@@ -23,8 +24,33 @@ or the user specified location during the installation process.
 The script to run Metagenome Analysis Pipeline is metagenome.py is available inside the STMAP folder, that you cloned from github.
 
 **Installation of enrichM database**
+
 Please follow the instruction provided at https://github.com/geronimp/enrichM#setup to install and set path to enrichM database.
 
+**Installation Issue **
+
+  File "$HOME/STMAP/envs/enrichm/bin/enrichm", line 357, in <module>
+    r.main(args, sys.argv)
+  File "$HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/run.py", line 290, in main
+    d.do(args.uninstall)
+  File "$HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/data.py", line 120, in do
+    version_remote = urllib.request.urlopen(self.ftp + self.VERSION).readline().strip().decode("utf-8")
+AttributeError: module 'urllib' has no attribute 'request'
+
+Traceback (most recent call last):
+  File "$HOME/STMAP/envs/enrichm/bin/enrichm", line 357, in <module>
+    r.main(args, sys.argv)
+  File "$HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/run.py", line 290, in main
+    d.do(args.uninstall)
+  File "$HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/data.py", line 123, in do
+    version_local  = open(os.path.join(self.DATABASE_DIR, self.VERSION)).readline().strip()
+  
+  In case of the above errors, please add 'import urllib.request' (without quotes) to the below mentioned files
+  
+  1. $HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/data.py
+  2. $HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/run.py
+  
+  
 
 Input Files
 ===========
