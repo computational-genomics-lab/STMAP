@@ -280,16 +280,18 @@ for a in ${tools[@]}; do
 echo ""
 echo -e "\e[1;34m installing $a ...\e[0m" 
 echo ""
+conda config --set ssl_verify no
 conda install -c bioconda -c conda-forge -c r -c ursky -y $a
 done
 echo "export PATH=\"$$InstallDir/bin\":\$PATH" >> ~/.bashrc
 
 
 echo -e "\e[1;36m Creating enrichm environment and installing dependancies \e[0m"
+conda config --set ssl_verify no
 conda create -n enrichm -c bioconda -c geronimp -c conda-forge -c defaults -c r -y r-gridExtra r-optparse enrichm mcl R hmmer diamond prodigal parallel openmp mmseqs2 moreutils request seqmagick
 enrichm_dir="$InstallDir/envs/enrichm/bin"
 echo "export PATH=\"$enrichm_dir\":\$PATH" >> ~/.bashrc
-
+conda config --set ssl_verify no
 conda create -n pyenv27 -c bioconda -c biobakery -y python=2.7 graphlan export2graphlan hclust2 lefse
 pyenv27_dir="$InstallDir/envs/pyenv27/bin"
 echo "export PATH=\"$pyenv27_dir\":\$PATH" >> ~/.bashrc
