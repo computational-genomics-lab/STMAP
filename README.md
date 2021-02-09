@@ -28,7 +28,7 @@ The script to run Metagenome Analysis Pipeline is metagenome.py is available ins
 Please follow the instruction provided at https://github.com/geronimp/enrichM#setup to install and set path to enrichM database.
 
 
-**enrichM database Installation Issue **
+**enrichM database Installation Issue**
 
   File "$HOME/STMAP/envs/enrichm/bin/enrichm", line 357, in <module>
     r.main(args, sys.argv)
