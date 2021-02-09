@@ -240,7 +240,7 @@ fi
 #    echo "remotes::install_github('MadsAlbertsen/ampvis2')" |  $InstallDir/bin/R --no-save 
 #fi
 
-piptools=(drep checkm-genome python-Levenshtein enrichm)
+piptools=(drep checkm-genome python-Levenshtein)
 for a in ${piptools[@]}; do
 	echo ""
 	echo -e "\e[1;34m installing $a ...\e[0m" 
