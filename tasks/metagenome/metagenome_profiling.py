@@ -128,8 +128,8 @@ class compositionProfiling(luigi.Task):
 		with self.output().open('w') as outfile:
 			outfile.write('Metagenome binning finished at {t}'.format(t=timestamp))
 
-
-class graphlan(luigi.Task):
+class profileTaxonomy(luigi.Task):
+#class graphlan(luigi.Task):
 	project_name=GlobalParameter().projectName
 	#assembly_type=luigi.ChoiceParameter(default="single",choices=["single", "co"], var_type=str)
 	adapter = GlobalParameter().adapter
@@ -141,7 +141,7 @@ class graphlan(luigi.Task):
 
 	def requires(self):
 		return [metaphlan(pre_process_reads=self.pre_process_reads, 
-					sampleName=i)
+				  sampleName=i)
                 	for i in [line.strip()
                           for line in
                           	open((os.path.join(os.getcwd(), "config", "pe_samples.lst")))]]	
@@ -153,10 +153,8 @@ class graphlan(luigi.Task):
 		outDir=os.path.join(os.getcwd(), GlobalParameter().projectName,"metaphlan_analysis" ,"data_for_images" + "/")
 		graphlan_folder = os.path.join(os.getcwd(), GlobalParameter().projectName, "metaphlan_analysis" ,"figures" + "/")
 
-		return {'out1': luigi.LocalTarget(outDir + "/" + "merged_abundance_table.txt"),
-				'out2': luigi.LocalTarget(outDir + "/" + "otu_table_ampvis2.txt")
-				}
-				
+		return {'out1': luigi.LocalTarget(outDir + "/" + "merged_abundance_table.txt")}
+				#'out2': luigi.LocalTarget(outDir + "/" + "otu_table_ampvis2.txt"
 				#'out6': luigi.LocalTarget(graphlan_folder + "/" + "graphlan_merged_abundance.pdf")}
 
 	def run(self):
@@ -190,7 +188,7 @@ class graphlan(luigi.Task):
 							 "| grep -v '#'| grep -v 'MetaPhlAn'| grep -v 'WARNING'| " \
 							 "sed -e 's/clade_name/taxonomy/'|sed -e 's/|/;/g'|cut -f1,2 --complement " \
 							 "> {outDir}/sample_abundance.txt".format(outDir=outDir)
-
+		'''
 		cmd_otu_id_phyloseq="cat {outDir}/taxonomy_phyloseq.txt |sed 's/^.*s__//g' | sed -e 's/taxonomy/#OTU ID/' " \
 							"> {outDir}/otu_id_phyloseq.txt".format(outDir=outDir)
 
@@ -210,7 +208,7 @@ class graphlan(luigi.Task):
 
 		cmd_otu_ampvis2="paste {outDir}/otu_id_ampvis2.txt {outDir}/sample_abundance.txt {outDir}/taxonomy_ampvis2.txt" \
 						" > {outDir}/otu_table_ampvis2.txt".format(outDir=outDir)
-
+		'''
 		
 		print("****NOW RUNNING COMMAND****:" + cmd_taxonomy_phyloseq)
 		print(run_cmd(cmd_taxonomy_phyloseq))		
@@ -305,7 +303,7 @@ class graphlan(luigi.Task):
 		print(run_cmd(cmd_run_graphlan))
 		#subprocess.run('conda deactivate graphlan', shell=True)
 		
-
+'''
 class profileTaxonomy(luigi.Task):
 	project_name=GlobalParameter().projectName
 	adapter = GlobalParameter().adapter
@@ -333,8 +331,9 @@ class profileTaxonomy(luigi.Task):
 						"ampvis.r -t {map_file} " \
 						"-v {condition_column} " \
 						"-a {inDir}/otu_table_ampvis2.txt".format(map_file=map_file,
-																 inDir=inDir,
-																 ampvis_folder=ampvis_folder,
-																 condition_column=self.condition_column)
+											  inDir=inDir,
+											  ampvis_folder=ampvis_folder,
+											  condition_column=self.condition_column)
 		print("****NOW RUNNING COMMAND****:" + cmd_run_ampvis)
 		print(run_cmd(cmd_run_ampvis))
+'''
