@@ -22,6 +22,10 @@ or the user specified location during the installation process.
 
 The script to run Metagenome Analysis Pipeline is metagenome.py is available inside the STMAP folder, that you cloned from github.
 
+**Installation of enrichM database**
+Please follow the instruction provided at https://github.com/geronimp/enrichM#setup to install and set path to enrichM database.
+
+
 Input Files
 ===========
 
