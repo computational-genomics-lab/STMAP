@@ -17,6 +17,8 @@ Installation also requires **pre-instaled** ``git``, ``gcc``, ``cpp`` and ``zlib
 
 After successful installation, close the current terminal. 
 In a new terminal. source the bashrc file:  ``source ~/.bashrc``
+One note of caution here is if your .bashrc file is already populated and is tuned to run some of our other pipelines, then clean it 
+up before installing STMAP. It may interfere with the environment variables.
 
 All the third party tools installed using conda are available at $HOME/STMAP/ [default location]
 or the user specified location during the installation process.
@@ -27,8 +29,18 @@ The script to run Metagenome Analysis Pipeline is metagenome.py is available ins
 
 Please follow the instruction provided at https://github.com/geronimp/enrichM#setup to install and set path to enrichM database.
 
+**After installing all pre-rquisites for enrichm**
+After installation of enrichm and its other requisite packages, the next thing to be installed is the database using the following command
 
-**enrichM database Installation Issue**
+    enrichm data
+    
+  **enrichM database Installation Issue**
+  
+  [However, it is noted that many times, this command does not run well. In case you 
+  encounter an error as below then]
+
+
+
 
   File "$HOME/STMAP/envs/enrichm/bin/enrichm", line 357, in <module>
     r.main(args, sys.argv)
@@ -38,18 +50,15 @@ Please follow the instruction provided at https://github.com/geronimp/enrichM#se
     version_remote = urllib.request.urlopen(self.ftp + self.VERSION).readline().strip().decode("utf-8")
 AttributeError: module 'urllib' has no attribute 'request'
 
-Traceback (most recent call last):
-  File "$HOME/STMAP/envs/enrichm/bin/enrichm", line 357, in <module>
-    r.main(args, sys.argv)
-  File "$HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/run.py", line 290, in main
-    d.do(args.uninstall)
-  File "$HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/data.py", line 123, in do
-    version_local  = open(os.path.join(self.DATABASE_DIR, self.VERSION)).readline().strip()
-  
-  In case of the above errors, please add 'import urllib.request' (without quotes) to the below mentioned files
-  
+  Go to files:
   1. $HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/data.py
   2. $HOME/STMAP/envs/enrichm/lib/python3.7/site-packages/enrichm/run.py
+  
+  add 'import urllib.request' (without quotes)
+  run
+    enrichm data    
+   
+   again ( At this stage a data of size 5.6 GB is downloaded and may take approximately 15 mins)
   
   
 
