@@ -89,8 +89,8 @@ class configureProject(luigi.Task):
 			if val in accepted_values_genome:
 				dicts[i] = val
 			else:
-				print(f'{val} is not a valid option. \tchoose from [pe, mp, ont, pac]: ')
-				val = str(input("Enter Data Type of {data}: \tchoose from [pe, mp, ont, pac]: ".format(data=i)))
+				print(f'{val} is not a valid option. \tchoose from [pe, ont, pac]: ')
+				val = str(input("Enter Data Type of {data}: \tchoose from [pe,ont, pac]: ".format(data=i)))
 
 		#print(dicts)
 
