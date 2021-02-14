@@ -7,11 +7,11 @@ from tasks.metagenome.readCleaning.rawReadQC import readqc
 
 class GlobalParameter(luigi.Config):
 	pe_read_dir=luigi.Parameter()	
-	mp_read_dir=luigi.Parameter()
+	#mp_read_dir=luigi.Parameter()
 	pac_read_dir=luigi.Parameter()
 	ont_read_dir=luigi.Parameter()
 	pe_read_suffix=luigi.Parameter()		
-	mp_read_suffix=luigi.Parameter()
+	#mp_read_suffix=luigi.Parameter()
 	pac_read_suffix=luigi.Parameter()
 	ont_read_suffix=luigi.Parameter()
 	projectName=luigi.Parameter()
@@ -41,12 +41,12 @@ def createFolder(directory):
 
 class cleanFastq(luigi.Task):
 	pe_read_dir = GlobalParameter().pe_read_dir
-	mp_read_dir = GlobalParameter().mp_read_dir
+	#mp_read_dir = GlobalParameter().mp_read_dir
 	ont_read_dir = GlobalParameter().ont_read_dir
 	pac_read_dir = GlobalParameter().pac_read_dir
 
 	pe_read_suffix = GlobalParameter().pe_read_suffix
-	mp_read_suffix = GlobalParameter().mp_read_suffix
+	#mp_read_suffix = GlobalParameter().mp_read_suffix
 	ont_read_suffix = GlobalParameter().ont_read_suffix
 	pac_read_suffix = GlobalParameter().pac_read_suffix
 
@@ -57,8 +57,8 @@ class cleanFastq(luigi.Task):
 
 	sampleName = luigi.Parameter(description="name of the sample to be analyzed. (string)")
 
-	seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end','pe-mp: paired-end and mate-pair',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
-                                             choices=["pe", "mp","pe-mp", "pe-ont", "pe-pac","ont","pac"], var_type=str)
+	seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
+                                             choices=["pe", "pe-ont", "pe-pac","ont","pac"], var_type=str)
 
 
 	adapter = GlobalParameter().adapter
@@ -119,7 +119,7 @@ class cleanFastq(luigi.Task):
 
 
 		pe_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads", "PE-Reads" + "/")
-		mp_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads", "MP-Reads" + "/")
+		#mp_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads", "MP-Reads" + "/")
 		ont_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads", "ONT-Reads" + "/")
 		pac_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads", "PAC-Reads" + "/")
 		
@@ -133,16 +133,6 @@ class cleanFastq(luigi.Task):
 		if self.seq_platforms == "pac":
 			return {'out1': luigi.LocalTarget(pac_clean_read_folder + self.sampleName + ".fastq")}
 
-
-		if self.seq_platforms == "mp":
-			return {'out1': luigi.LocalTarget(mp_clean_read_folder + self.sampleName + "_R1.fastq"),
-					'out2': luigi.LocalTarget(mp_clean_read_folder + self.sampleName + "_R2.fastq")}
-
-		if self.seq_platforms == "pe-mp":
-			return {'out1': luigi.LocalTarget(pe_clean_read_folder + self.sampleName + "_R1.fastq"),
-					'out2': luigi.LocalTarget(pe_clean_read_folder + self.sampleName + "_R2.fastq"),
-					'out3': luigi.LocalTarget(mp_clean_read_folder + self.sampleName + "_R1.fastq"),
-					'out4': luigi.LocalTarget(mp_clean_read_folder + self.sampleName + "_R2.fastq")}
 
 		if self.seq_platforms == "pe-ont":
 			return {'out1': luigi.LocalTarget(pe_clean_read_folder + self.sampleName + "_R1.fastq"),
@@ -159,18 +149,10 @@ class cleanFastq(luigi.Task):
 		
 	def run(self):
 		pe_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads","PE-Reads" + "/")
-		mp_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads","MP-Reads" + "/")
-
 		ont_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads", "ONT-Reads" + "/")
 		pac_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads", "PAC-Reads" + "/")
-		
 		read_clean_log_folder = os.path.join(os.getcwd(), "log","ReadCleaning" + "/")
-
 		cleanFastq_pe_clean_stat_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC", "CleanedReads","Cleaned_PE_Reads_STAT" + "/")
-		cleanFastq_mp_clean_stat_folder = os.path.join(os.getcwd(), self.projectName, "ReadQC","CleanedReads","Cleaned_MP_Reads_STAT" + "/")
-
-		
-
 
 		
 		cmd_clean_pe = "[ -d  {pe_clean_read_folder} ] || mkdir -p {pe_clean_read_folder}; " \
@@ -225,57 +207,6 @@ class cleanFastq(luigi.Task):
 					read_clean_log_folder=read_clean_log_folder)
 
 		##################
-		cmd_clean_mp = "[ -d  {mp_clean_read_folder} ] || mkdir -p {mp_clean_read_folder}; " \
-					   "mkdir -p {cleanFastq_mp_clean_stat_folder}; mkdir -p {read_clean_log_folder}; bbduk.sh " \
-					   "-Xmx{Xmx}g " \
-					   "threads={cpu} " \
-					   "ecco={corret_error} " \
-					   "minlength={min_length} " \
-					   "minavgquality={min_average_quality} " \
-					   "minbasequality={min_base_quality} " \
-					   "trimq={trim_quality} " \
-					   "qtrim={quality_trim} " \
-					   "ftl={trim_front} " \
-					   "ftr2={trim_tail} " \
-					   "mingc={min_GC} " \
-					   "maxgc={max_GC} " \
-					   "maxns={max_n} " \
-					   "tbo={trim_by_overlap} " \
-					   "tpe={trim_pairs_evenly} " \
-					   "in1={mate_pair_read_dir}{sampleName}_R1.{mate_pair_read_suffix} " \
-					   "in2={mate_pair_read_dir}{sampleName}_R2.{mate_pair_read_suffix} " \
-					   "out={mp_clean_read_folder}{sampleName}_R1.fastq " \
-					   "out2={mp_clean_read_folder}{sampleName}_R2.fastq " \
-					   "ziplevel=9 " \
-					   "ref={adapter} " \
-					   "stats={cleanFastq_mp_clean_stat_folder}{sampleName}.stat " \
-					   "bqhist={cleanFastq_mp_clean_stat_folder}{sampleName}.qual.hist " \
-					   "gchist={cleanFastq_mp_clean_stat_folder}{sampleName}.gc.hist " \
-					   " 2>&1 | tee {read_clean_log_folder}{sampleName}_mp_cleanFastq_run.log " \
-			.format(Xmx=self.maxMemory,
-					cpu=self.threads,
-					mate_pair_read_dir=self.mp_read_dir,
-					mate_pair_read_suffix=self.mp_read_suffix,
-					sampleName=self.sampleName,
-					corret_error=self.corret_error,
-					adapter=self.adapter,
-					mp_clean_read_folder=mp_clean_read_folder,
-					min_length=self.min_length,
-					min_average_quality=self.min_average_quality,
-					min_base_quality=self.min_base_quality,
-					trim_quality=self.trim_quality,quality_trim=self.quality_trim,
-					trim_front=self.trim_front,
-					trim_tail=self.trim_tail,
-					min_GC=self.min_GC, max_n=self.max_n,
-					max_GC=self.max_GC,
-					kmer=self.kmer,
-					trim_by_overlap=self.trim_by_overlap,
-					trim_pairs_evenly=self.trim_pairs_evenly,
-					cleanFastq_mp_clean_stat_folder=cleanFastq_mp_clean_stat_folder,
-					read_clean_log_folder=read_clean_log_folder)
-		##################
-
-		
 		cmd_clean_ont = "[ -d  {ont_clean_read_folder} ] || mkdir -p {ont_clean_read_folder}; " \
 					   "cd {ont_clean_read_folder}; " \
 					   "filtlong --min_length {long_read_min_length} " \
@@ -319,17 +250,6 @@ class cleanFastq(luigi.Task):
 			print("****** NOW RUNNING COMMAND ******: " + cmd_clean_ont)
 			print(run_cmd(cmd_clean_ont))
 
-		if self.seq_platforms == "mp":
-			print("****** NOW RUNNING COMMAND ******: " + cmd_clean_mp)
-			print(run_cmd(cmd_clean_mp))
-
-
-		if self.seq_platforms == "pe-mp":
-			print("****** NOW RUNNING COMMAND ******: " + cmd_clean_pe)
-			print(run_cmd(cmd_clean_pe))
-			print("****** NOW RUNNING COMMAND ******: " + cmd_clean_mp)
-			print(run_cmd(cmd_clean_mp))
-
 		if self.seq_platforms == "pe-ont":
 			print("****** NOW RUNNING COMMAND ******: " + cmd_clean_pe)
 			print(run_cmd(cmd_clean_pe))
@@ -366,47 +286,6 @@ class cleanReads(luigi.Task):
 							  open((os.path.join(os.getcwd(), "sample_list", "pe_samples.lst")))]]
 			       ]
 
-
-		if self.seq_platforms == "mp":
-			return [[cleanFastq(seq_platforms=self.seq_platforms,
-						   sampleName=i)
-					for i in [line.strip()
-							  for line in
-							  open((os.path.join(os.getcwd(),"sample_list", "mp_samples.lst")))]],
-
-					[readqc(seq_platforms=self.seq_platforms,
-							sampleName=i)
-					 for i in [line.strip()
-							   for line in
-							   open((os.path.join(os.getcwd(), "sample_list", "mp_samples.lst")))]]
-					]
-
-
-		if self.seq_platforms == "pe-mp":
-
-			return [
-						[cleanFastq(seq_platforms="pe",sampleName=i)
-								for i in [line.strip()
-										  for line in
-												open((os.path.join(os.getcwd(), "sample_list","pe_samples.lst")))]],
-
-						[cleanFastq(seq_platforms="mp", sampleName=i)
-								for i in [line.strip()
-										  for line in
-												open((os.path.join(os.getcwd(), "sample_list","mp_samples.lst")))]],
-
-						[readqc(seq_platforms="pe",
-									sampleName=i)
-								for i in [line.strip()
-						   				 for line in
-						  						open((os.path.join(os.getcwd(), "sample_list", "pe_samples.lst")))]],
-
-						[readqc(seq_platforms="mp",
-									sampleName=i)
-				 				for i in [line.strip()
-						   				 for line in
-						   						open((os.path.join(os.getcwd(), "sample_list", "mp_samples.lst")))]]
-				  ]
 
 		if self.seq_platforms == "ont":
 			return [
