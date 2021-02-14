@@ -5,11 +5,9 @@ import subprocess
 
 class GlobalParameter(luigi.Config):
 	pe_read_dir=luigi.Parameter()	
-	mp_read_dir=luigi.Parameter()
 	pac_read_dir=luigi.Parameter()
 	ont_read_dir=luigi.Parameter()
 	pe_read_suffix=luigi.Parameter()		
-	mp_read_suffix=luigi.Parameter()
 	pac_read_suffix=luigi.Parameter()
 	ont_read_suffix=luigi.Parameter()
 	projectName=luigi.Parameter()
@@ -42,13 +40,12 @@ createFolder("task_logs")
 class postreadqc(luigi.Task):
 	#projectName = luigi.Parameter(default="ReadQC")
 	sampleName = luigi.Parameter(description="name of the sample to be analyzed. (string)")
-	seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end','pe-mp: paired-end and mate-pair',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
-                                             choices=["pe", "mp","pe-mp", "pe-ont", "pe-pac","ont","pac"], var_type=str)
+	seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
+                                             choices=["pe", "pe-ont", "pe-pac","ont","pac"], var_type=str)
 
 
 	def output(self):
 		pe_readQC_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","PostQC", "PE-Reads" + "/")
-		mp_readQC_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC", "PostQC","MP-Reads" + "/")
 		ont_readQC_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC", "PostQC","ONT-Reads" + "/")
 		pac_readQC_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC", "PostQC","PACBIO-Reads" + "/")
 
@@ -66,12 +63,6 @@ class postreadqc(luigi.Task):
 					'out2': luigi.LocalTarget(mp_readQC_folder + self.sampleName + "_R1_fastqc.html")}
 
 
-		if self.seq_platforms == "pe-mp":
-			return {'out1': luigi.LocalTarget(pe_readQC_folder + self.sampleName + "_R1_fastqc.html"),
-					'out2': luigi.LocalTarget(pe_readQC_folder + self.sampleName + "_R2_fastqc.html"),
-					'out3': luigi.LocalTarget(mp_readQC_folder + self.sampleName + "_R1_fastqc.html"),
-					'out4': luigi.LocalTarget(mp_readQC_folder + self.sampleName + "_R2_fastqc.html")}
-
 		if self.seq_platforms == "pe-ont":
 			return {'out1': luigi.LocalTarget(pe_readQC_folder + self.sampleName + "_R1_fastqc.html"),
 					'out2': luigi.LocalTarget(pe_readQC_folder + self.sampleName + "_R2_fastqc.html"),
@@ -86,13 +77,11 @@ class postreadqc(luigi.Task):
 
 	def run(self):
 		pe_readQC_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","PostQC", "PE-Reads" + "/")
-		mp_readQC_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC", "PostQC","MP-Reads" + "/")
 		ont_readQC_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC", "PostQC","ONT-Reads" + "/")
 		pac_readQC_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC", "PostQC","PACBIO-Reads" + "/")
 
 				
 		pe_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads","PE-Reads" + "/")
-		mp_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads","MP-Reads" + "/")
 		ont_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads","ONT-Reads" + "/")
 		pac_clean_read_folder = os.path.join(os.getcwd(), self.projectName,"ReadQC","CleanedReads","PACBIO-Reads" + "/")
 
@@ -114,19 +103,6 @@ class postreadqc(luigi.Task):
 													   pe_clean_read_folder=pe_clean_read_folder,
 													   read_QC_log_folder=read_QC_log_folder)
 
-		cmd_cleaned_mp_qc = "[ -d  {mp_readQC_folder} ] || mkdir -p {mp_readQC_folder};  mkdir -p {read_QC_log_folder}; " \
-						"fastqc " \
-						"-t {cpu} " \
-						"{mp_clean_read_folder}{sampleName}_R1.fastq " \
-						"{mp_clean_read_folder}{sampleName}_R2.fastq " \
-						"-o {mp_readQC_folder} " \
-						"2>&1 | tee  {read_QC_log_folder}{sampleName}_cleaned_mp_fastqc.log".format(
-													   sampleName=self.sampleName,
-													   mp_readQC_folder=mp_readQC_folder,
-													   cpu=GlobalParameter().threads,
-													   read_QC_log_folder=read_QC_log_folder,
-													   mp_clean_read_folder=mp_clean_read_folder)
-
 		cmd_cleaned_ont_qc = "[ -d  {ont_readQC_folder} ] || mkdir -p {ont_readQC_folder};  mkdir -p {read_QC_log_folder}; " \
 						"nanoQC -o {ont_readQC_folder} " \
 						"{ont_clean_read_folder}{sampleName}.fastq " \
@@ -144,8 +120,6 @@ class postreadqc(luigi.Task):
 													   pac_clean_read_folder=pac_clean_read_folder)
 
 
-
-
 		cmd_mv_ont_qc = "cd {ont_readQC_folder};  " \
 						"mv nanoQC.html {sampleName}_nanoQC.html ".format(sampleName=self.sampleName,
 													   ont_readQC_folder=ont_readQC_folder)
@@ -158,10 +132,7 @@ class postreadqc(luigi.Task):
 			print("****** NOW RUNNING COMMAND ******: " + cmd_cleaned_pe_qc)
 			print (run_cmd(cmd_cleaned_pe_qc))
 
-		if self.seq_platforms == "mp":
-			print("****** NOW RUNNING COMMAND ******: " + cmd_cleaned_mp_qc)
-			print (run_cmd(cmd_cleaned_mp_qc))
-
+		
 		if self.seq_platforms == "ont":
 			print("****** NOW RUNNING COMMAND ******: " + cmd_cleaned_ont_qc)
 			print (run_cmd(cmd_cleaned_ont_qc))
@@ -172,14 +143,7 @@ class postreadqc(luigi.Task):
 			print("****** NOW RUNNING COMMAND ******: " + cmd_cleaned_pac_qc)
 			print (run_cmd(cmd_cleaned_pac_qc))
 			print("****** NOW RUNNING COMMAND ******: " + cmd_mv_pac_qc)
-			print(run_cmd(cmd_mv_pac_qc))
-
-		if self.seq_platforms == "pe-mp" :
-			print("****** NOW RUNNING COMMAND ******: " + cmd_cleaned_pe_qc)
-			print(run_cmd(cmd_cleaned_pe_qc))
-			print("****** NOW RUNNING COMMAND ******: " + cmd_cleaned_mp_qc)
-			print(run_cmd(cmd_cleaned_mp_qc))
-		
+			print(run_cmd(cmd_mv_pac_qc))	
 
 		if self.seq_platforms == "pe-ont":
 			print("****** NOW RUNNING COMMAND ******: " + cmd_cleaned_pe_qc)
@@ -201,7 +165,7 @@ class postreadqc(luigi.Task):
 
 class cleanReadsQC(luigi.Task):
 	seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end','pe-mp: paired-end and mate-pair',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
-                                             choices=["pe", "mp","pe-mp", "pe-ont", "pe-pac","ont","pac"], var_type=str)
+                                             choices=["pe", "pe-ont", "pe-pac","ont","pac"], var_type=str)
 
 	def requires(self):
 
@@ -226,30 +190,7 @@ class cleanReadsQC(luigi.Task):
 							  for line in
 							  open((os.path.join(os.getcwd(), "sample_list", "pac_samples.lst")))]]
 
-
-		if self.seq_platforms == "mp":
-			return [postreadqc(seq_platforms=self.seq_platforms,
-						   sampleName=i)
-					for i in [line.strip()
-							  for line in
-							  open((os.path.join(os.getcwd(),"sample_list", "mp_samples.lst")))]]
-
-
-		if self.seq_platforms == "pe-mp":
-
-			return [
-						[postreadqc(seq_platforms="pe",sampleName=i)
-								for i in [line.strip()
-										  for line in
-												open((os.path.join(os.getcwd(), "sample_list","pe_samples.lst")))]],
-
-						[postreadqc(seq_platforms="mp", sampleName=i)
-								for i in [line.strip()
-										  for line in
-												open((os.path.join(os.getcwd(), "sample_list","mp_samples.lst")))]]
-				  ]
-
-
+				
 		if self.seq_platforms == "pe-ont":
 
 			return [
@@ -288,19 +229,3 @@ class cleanReadsQC(luigi.Task):
 		timestamp = time.strftime('%Y%m%d.%H%M%S', time.localtime())
 		with self.output().open('w') as outfile:
 			outfile.write('Cleaned Read QC Assessment finished at {t}'.format(t=timestamp))
-
-
-
-
-
-
-
-
-
-
-		
-
-
-
-
-
