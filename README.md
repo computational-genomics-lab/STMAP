@@ -65,7 +65,7 @@ AttributeError: module 'urllib' has no attribute 'request'
 Input Files
 ===========
 
-Raw RNASeq Reads
+Raw Reads
 ----------------
 
   The raw ilumina reads in FASTQ format must be placed inside a folder with read permission
