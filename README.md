@@ -95,8 +95,6 @@ The illumina paired end sample data for testing the pipeline can be obtained fro
 https://figshare.com/articles/dataset/Sample_Data_for_MGAPipe/13340522
 
 
-.. code-block:: none
-
     Sample meta data mapping
 
     samples	     conditions
@@ -115,14 +113,9 @@ https://figshare.com/articles/dataset/Sample_Data_for_MGAPipe/13340522
     SRS019219	   tongue_dorsum
     SRS019329	   buccal_mucosa
 
-.. _commands:
 
 Commands
 ========
-
-.. toctree::
-   :hidden:
-
 
 
 Commands to run Metagenome Analysis Workflow
@@ -158,83 +151,8 @@ metagenome.py ``command`` --help
 Prepare Project
 ===============
 
-
-A. Single (or) multiple samples with out any conditions
--------------------------------------------------------
-
-    
-    STEP 1: copy the luigi.cfg template file to the present working directory
-
-    luigi.cfg Template File
-    ---------------------------------------------------------
-    [core]
-    default-scheduler-port:
-    error-email=
-
-    [GlobalParameter]
-    projectName=
-    projectDir=
-    domain=
-    adapter=
-    pe_read_dir=
-    pe_read_suffix=
-    seq_platforms=
-    pac_read_dir=
-    pac_read_suffix=
-    ont_read_dir=
-    ont_read_suffix=
-    threads=
-    maxMemory=
-    -----------------------------------------------------------
-
-    STEP2: Fill the parameters as instructed
-
-    NOTE:  1. User has to provide the path for the adapter file (tasks/utility/adapters.fasta.gz)
-           2. For illumina paired end reads, seq_platforms must be ``pe``
-                  Nanopore reads, seq_platforms must be ``ont`` 
-                  PacBio reads, seq_platforms must be ``pac`` 
-    
-    Example: luigi.cfg
-    ---------------------------------------------------------
-    [core]
-    default-scheduler-port:8082
-    error-email=xxx@yyy.com
-
-    [GlobalParameter]
-    projectName=metagenome_demo_analysis
-    projectDir=/home/sutripa/Documents/metagenome_demo_analysis/
-    domain=prokaryote
-    adapter=/home/sutripa/scriptome/tasks/utility/adapters.fasta.gz
-    pe_read_dir=/home/sutripa/Documents/metagenome_symlink/pe/
-    pe_read_suffix=fastq.gz
-    seq_platforms=pe
-    pac_read_dir=NA
-    pac_read_suffix=NA
-    ont_read_dir=NA
-    ont_read_suffix=NA
-    threads=15
-    maxMemory=28
-    ---------------------------------------------------------
-
-    STEP 3: a. User has to create a project folder with exact name provided against ``projectName`` parameter
-            b. User must create a folder in the name of ``config`` in the current working directory
-            c. The config folder must contain a file in the name of ``pe_samples.lst`` containing the name of the samples
-
-    Example of ``pe_samples.lst``
-
-    ---------------
-    SRS017713
-    SRS019327
-    SRS019221
-    SRS013506
-    ---------------
-
-
-B. Single (or) Multiple Samples with conditions
-------------------------------------------------
-
 To design and perform a Metagenome Analysis experiment, a Project need to be prepaired using the ``configureProject`` command.
-The current working directory must contain a template of luigi.cfg file.
+The current working directory must contain a template of luigi.cfg file. (https://github.com/computational-genomics-lab/STMAP/blob/main/luigi.cfg)
 
 
     metagenome.py configureProject --help <arguments>
@@ -348,7 +266,6 @@ The current working directory must contain a template of luigi.cfg file.
     Requirements
        1. Execution of prepareProject.py command 
        2. Availability of ``luigi.cfg`` file in ``parent folder`` and ``pe_samples.lst`` inside the ``config``.
-
 
 
     [MetagenomeAnalysis]$ metagenome.py cleanReads <arguments> --local-scheduler
