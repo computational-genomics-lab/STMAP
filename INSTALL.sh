@@ -289,7 +289,7 @@ echo "export PATH=\"$$InstallDir/bin\":\$PATH" >> ~/.bashrc
 
 echo -e "\e[1;36m Creating enrichm environment and installing dependancies \e[0m"
 conda config --set ssl_verify no
-conda create -n enrichm -c bioconda -c geronimp -c conda-forge -c defaults -c r -y r-gridExtra r-optparse enrichm mcl R hmmer diamond prodigal parallel openmp mmseqs2 moreutils request seqmagick
+conda create -n enrichm -c bioconda -c geronimp -c conda-forge -c defaults -c r -y r-gridExtra r-optparse enrichm mcl R hmmer diamond psutil prodigal parallel openmp mmseqs2 moreutils request seqmagick
 enrichm_dir="$InstallDir/envs/enrichm/bin"
 echo "export PATH=\"$enrichm_dir\":\$PATH" >> ~/.bashrc
 conda config --set ssl_verify no
