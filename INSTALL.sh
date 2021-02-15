@@ -211,6 +211,7 @@ echo "export PATH=\"$ANNOTATION\":\$PATH" >> ~/.bashrc
 echo "export PATH=\"$UTILITY\":\$PATH" >> ~/.bashrc 
 echo "export PATH=\"$MG_ANALYSIS\":\$PATH" >> ~/.bashrc 
 echo "export PATH=\"$READCleaning\":\$PATH" >> ~/.bashrc 
+echo "export PATH=\"$PREFIX\":\$PATH" >> ~/.bashrc
 
 
 # Add Entry Point to the path
