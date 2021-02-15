@@ -236,35 +236,6 @@ B. Single (or) Multiple Samples with conditions
 To design and perform a Metagenome Analysis experiment, a Project need to be prepaired using the ``configureProject`` command.
 The current working directory must contain a template of luigi.cfg file.
 
-Conda environment must be activated before running the script.
-
-
-Usage:  projectConfig.py -h
-
-
-.. code-block:: none
-    
-    luigi.cfg Template File
-    ---------------------------------------------------------
-    [core]
-    default-scheduler-port:
-    error-email=
-
-    [GlobalParameter]
-    projectName=
-    projectDir=
-    domain
-    adapter=
-    pe_read_dir=
-    pe_read_suffix=
-    seq_platforms=
-    pac_read_dir=
-    pac_read_suffix=
-    ont_read_dir=
-    ont_read_suffix=
-    threads=
-    maxMemory=
-    -----------------------------------------------------------
 
     metagenome.py configureProject --help <arguments>
     --help             Show this help message and exit
@@ -320,7 +291,7 @@ Usage:  projectConfig.py -h
                                       --userEmail xxx@yyy.com \
                                       --local-scheduler
  
-    Running the prepareProject.py script with the above parameters asks for the individual file types present inside the inputData folder.
+    Running the configureProject command with the above parameters asks for the individual file types present inside the inputData folder.
 
     User has to choose  [pe:   paired end
                         ont:  nanopore
