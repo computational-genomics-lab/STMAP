@@ -2,7 +2,7 @@ import luigi
 import time
 import os
 import subprocess
-from tasks.readCleaning.cleanedReadQC import *
+from tasks.metagenome.readCleaning.cleanedReadQC import *
 
 class GlobalParameter(luigi.Config):
 	pe_read_dir=luigi.Parameter()	
