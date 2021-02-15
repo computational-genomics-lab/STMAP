@@ -198,6 +198,7 @@ END
 BASE_TASKS=$BASE_DIR/tasks/
 cp -ar $BASE_TASKS $InstallDir
 cp $BASE_DIR/metagenome.py $InstallDir/metagenome.py
+cp $BASE_DIR/luigi.cfg $InstallDir/luigi.cfg
 
 chmod 755 $BASE_DIR/*.sh
 #chmod 755 $BASE_DIR/*.py
