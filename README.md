@@ -169,13 +169,32 @@ Usage:  projectConfig.py -h
 **Run Example**
 You can launch a run for projectConfig.py using the following commandline:
     
-    mkdir RNASeq-Analysis
-    cd RNASeq-Analysis
+    mkdir MetagenomeAnalysis
+    cd MetagenomeAnalysis
    
-    [RNASeq-Analysis]$ projectConfig.py -i /storage/DATA/annotatedData/74/genecall/RNAseq_74_all/heatshock -p testDir -r pe -d prokaryote -g yes -o 74Testsymlink -e tsucheta@gmail.com
+    [MetagenomeAnalysis]$ projectConfig.py -i /home/sutripa/MetagenomeAnalysis/data -p metagenome_demo_analysis -d prokaryote -o metagenome_symlink -e tsucheta@gmail.com
 
 
-Make sure your input directory contains all the data including the RNAseq files, genome fasta file and annotation file. Once this commandline is executed, the script is going to iterate over the files in the directory and asks for user input such as whether the read type is pe, genome or annotation type or if the user wants to exclude the files from data analysis. The workflow takes 2 conditions at a time and generates conditions based on the file pre-fixes. When providing conditions as input make sure to only provide alphanumeric characters. Providing a "-" or "_"  may not work. In case, the file name pre-fixes are in-correct, then one needs to fix it at this time. Also make sure you are not including more than one condition. In that case, the program will exit with error.
+Make sure your input directory contains all the data including the metagenome WGS files. Once this commandline is executed, the script is going to iterate over the files in the directory and asks for user input such as whether the read type is pe [Illumina paired end], ont [nanopore] or pac [pacBio] type or if the user wants to exclude the files from data analysis. The workflow takes 2 conditions at a time and generates conditions based on the file pre-fixes. 
+
+If user wants to perform enrichment analysis, then user has to provide conditions associated with each sample.When providing conditions as input make sure to only provide alphanumeric characters. Providing a "-" or "_"  may not work. In case, the file name pre-fixes are in-correct, then one needs to fix it at this time. Also make sure you are not including more than one condition. In that case, the program will exit with error.
+
+If user wants to perform genome resolved metagenomics or taxonomy profiling, user need to provide a single condition name.
+
+
+Output
+    1.  a project folder in the name of ``metagenome_demo_analysis`` will be generated
+
+    2. a configuration folder in the name of config containing 3 files   
+
+      a. metagenome_condition.tsv
+      b. metagenome_group.tsv
+      b. pe_samples.lst
+      c. samples.txt
+      
+    3. A folder named ``metagenome_symlink`` (provided as parameter to --symLinkDir) will be created which contains the symbolic links to the read files present    in the inputData (/home/sutripa/Documents/scriptome_metaphlan/data) folder
+
+    The ``metagenome_condition.tsv`` file contains the sample names with their associated environmental conditions, which will be used for condition based genome   binning and differential enrichment analysis. Kindly check the generated files and modify if required
 
 Commands to run Metagenome Analysis Workflow
 --------------------------------------------
@@ -187,23 +206,21 @@ metagenome.py ``command`` --help
 
     Command                      Description   
 
-    1. configureProject             Configure a Metagenome Analysis Project
+    1. rawReadsQC                   Raw Reads Quality Assessment using FASTQC tool 
 
-    2. rawReadsQC                   Raw Reads Quality Assessment using FASTQC tool 
+    2. cleanReads                   Process Raw Reads using BBDUK
 
-    3. cleanReads                   Process Raw Reads using BBDUK
+    3. metagenomeAssembly           Assemble Metagenome using MegaHIT
 
-    4. metagenomeAssembly           Assemble Metagenome using MegaHIT
-
-    5. genomeBinning                Binning individual assembled genome using metabat2
+    4. genomeBinning                Binning individual assembled genome using metabat2
     
-    6. binRefinement                Refine Bins using refineM
+    5. binRefinement                Refine Bins using refineM
 
-    7. dRepBins                     de-replicate genome bins using dRep
+    6. dRepBins                     de-replicate genome bins using dRep
 
-    8. annotateGenomeBins           Annotation of de-replicated bins using PROKKA
+    7. annotateGenomeBins           Annotation of de-replicated bins using PROKKA
 
-    9. deaGenomeBins                Differential Enrichment Analysis of genome bins (2 different conditions) using enrichM
+    8. deaGenomeBins                Differential Enrichment Analysis of genome bins (2 different conditions) using enrichM
 
 
 
@@ -214,89 +231,13 @@ To design and perform a Metagenome Analysis experiment, a Project need to be pre
 The current working directory must contain a template of luigi.cfg file. (https://github.com/computational-genomics-lab/STMAP/blob/main/luigi.cfg)
 
 
-    metagenome.py configureProject --help <arguments>
-    --help             Show this help message and exit
+   Options:
+  -h, --help            show this help message and exit
 
-    mandatory arguments         Description
-    
-    --inputDir                  Path to Directory containing raw illumina paired-end reads
-                                type: string
-                                Example: /home/sutripa/Documents/scriptome_metaphlan/data
-
-
-
-    --domain            Organism Domain
-                                type: string
-                                allowed values: [prokaryote, eukaryote]
 
     
-    Optional arguments
-    ------------------
-    --projectName               Name of the Project Directory to be created
-                                Must not contain blank spaces and (or) special characters
-                                type: string
-                                Default: metagenome_project
-
-    --schedulerPort             Scheduler Port Number for luigi
-                                type: int
-                                Default: 8082
-
-    --userEmail                 Provide your email address
-                                type: string
-                                Default: Null
-
-    --cpus                      Number of threads to be used
-                                type: int
-                                Default = (total threads -1)
-
-    --maxMemory                 Maximum allowed memory in GB. 
-                                type: int
-                                Default = [(available memory in GB) -1)
-    
-
-**Run Example**
- 
-    mkdir MetagenomeAnalysis
-    cd MetagenomeAnalysis
-    Note: MetagenomeAnalysis folder must contain the luigi.cfg template file
-   
-    [MetagenomeAnalysis]$ metagenome.py configureProject \
-                                      --domain prokaryote \
-                                      --inputDir /home/sutripa/Documents/scriptome_metaphlan/data \
-                                      --projectName metagenome_demo_analysis \
-                                      --symLinkDir metagenome_symlink \
-                                      --userEmail xxx@yyy.com \
-                                      --local-scheduler
- 
-    Running the configureProject command with the above parameters asks for the individual file types present inside the inputData folder.
-
-    User has to choose  [pe:   paired end
-                        ont:  nanopore
-                        pac:  pacbio
-                        ]
 
 
-    Successful run of the projectConfig.py script with appropriate parameters will generate 
-
-     1. Luigi Configuration file ``luigi.cfg`` in the parent folder
-       
-        Edit the luigi.cfg file if required.
-      
-        Note:
-        It is mandatory to provide the path of the adapter file (default location: /tasks/utility/adapter.fastq.gz)
-
-    2.  a project folder in the name of ``metagenome_demo_analysis`` will be generated
-
-    3. a configuration folder in the name of config containing 3 files   
-
-      a. metagenome_condition.tsv
-      b. metagenome_group.tsv
-      b. pe_samples.lst
-      c. samples.txt
-      
-    4. A folder named ``metagenome_symlink`` (provided as parameter to --symLinkDir) will be created which contains the symbolic links to the read files present    in the inputData (/home/sutripa/Documents/scriptome_metaphlan/data) folder
-
-    The ``metagenome_condition.tsv`` file contains the sample names with their associated environmental conditions, which will be used for condition based genome   binning and differential enrichment analysis. Kindly check the generated files and modify if required
   
 
    **Raw reads quality assessment**
