@@ -88,8 +88,6 @@ class cleanFastq(luigi.Task):
 
 	min_average_quality = luigi.OptionalParameter(default="10", description="Reads with average quality (after trimming) below "
 																"this will be discarded. Default: min_average_quality=10")
-	min_base_quality = luigi.OptionalParameter(default="0",description="Reads with any base below this quality (after trimming) will be discarded. "
-																"Default: min_base_quality=0")
 	min_GC = luigi.OptionalParameter(default="0.0", description="Discard reads with GC content below this. Default: min_gc=0.0")
 	max_GC = luigi.OptionalParameter(default="1.0", description="Discard reads with GC content below this. Default: max_gc=1")
 	kmer = luigi.OptionalParameter(default="13", description="Kmer length used for finding contaminants. Default: kmer=13")
@@ -163,7 +161,6 @@ class cleanFastq(luigi.Task):
 					   "ecco={corret_error} " \
 					   "minlength={min_length} " \
 					   "minavgquality={min_average_quality} " \
-					   "minbasequality={min_base_quality} " \
 					   "trimq={trim_quality} " \
 					   "qtrim={quality_trim} " \
 					   "ftl={trim_front} " \
@@ -194,7 +191,6 @@ class cleanFastq(luigi.Task):
 					pe_clean_read_folder=pe_clean_read_folder,
 					min_length=self.min_length,
 					min_average_quality=self.min_average_quality,
-					min_base_quality=self.min_base_quality,
 					trim_quality=self.trim_quality,
 					quality_trim=self.quality_trim,
 					trim_front=self.trim_front,
