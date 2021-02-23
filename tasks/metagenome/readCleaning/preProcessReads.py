@@ -57,11 +57,12 @@ class cleanFastq(luigi.Task):
 
 	sampleName = luigi.Parameter(description="name of the sample to be analyzed. (string)")
 
-	seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
-                                             choices=["pe", "pe-ont", "pe-pac","ont","pac"], var_type=str)
+	#seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
+                                           #choices=["pe", "pe-ont", "pe-pac","ont","pac"], var_type=str)
 
 
 	adapter = GlobalParameter().adapter
+	seq_platforms = GlobalParameter().seq_platforms
 
 	kmer_length=luigi.OptionalParameter(default="21",description="Kmer length used for finding contaminants. Contaminants "
 												 "shorter than kmer length will not be found.Default: 21")
@@ -265,9 +266,9 @@ class cleanFastq(luigi.Task):
 
 
 class cleanReads(luigi.Task):
-	
-	seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end','pe-mp: paired-end and mate-pair',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
-                                             choices=["pe", "mp","pe-mp", "pe-ont", "pe-pac","ont","pac"], var_type=str)
+	seq_platforms = GlobalParameter().seq_platforms
+	#seq_platforms = luigi.ChoiceParameter(description="Choose From['pe: paired-end','pe-mp: paired-end and mate-pair',pe-ont: paired-end and nanopore, pe-pac: paired-end and pacbio, ont: nanopore, pac: pacbio]",
+                                             #choices=["pe", "mp","pe-mp", "pe-ont", "pe-pac","ont","pac"], var_type=str)
 	def requires(self):
 
 		if self.seq_platforms == "pe":
