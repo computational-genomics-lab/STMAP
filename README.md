@@ -117,6 +117,65 @@ https://figshare.com/articles/dataset/Sample_Data_for_MGAPipe/13340522
 Commands
 ========
 
+**1. Prepare Project**
+
+To design and perform a Metagenome Analysis, a Project need to be prepaired using the ``projectConfig.py`` script. Conda environment must be activated before running the script.
+
+Usage:  projectConfig.py -h
+
+    prepareProject.py <arguments>
+    -h       --help             Show this help message and exit
+
+    mandatory arguments         Description
+    
+    -i      --inputDir          Path to Directory containing raw RNASeq reads, annotation file (gff / gtf), genome and (or) 
+                                transcriptome FASTA file. Make sure all the input files are located here.
+                                type: string
+                                Example: $HOME/STRAP-main/sample_data/mastigocladus
+
+    -e     --emailAddress       Provide your email address
+                                type: string
+                                Default: Null
+                                
+    -d     --domain             Organism Domain
+                                type: string
+                                allowed values: [prokaryote, eukaryote]
+                                Default: prokaryote
+
+    
+    Optional arguments
+    ------------------
+    
+    -p     --projectName        Name of the Project Directory to be created
+                                Must not contain blank spaces and (or) special characters
+                                type: string
+                                Default: metagenome_project
+
+    -s     --schedulerPort      Scheduler Port Number for luigi
+                                type: int
+                                Default: 8082
+                                
+    -o     --symLinkDir         Name of the Symbolic Link Directory to be created
+    
+    -t     --threads            Number of threads to be used
+                                type: int
+                                Default = (total threads -1)
+
+    -x     --maxMemory          Maximum allowed memory in GB. 
+                                type: int
+                                Default = [(available memory in GB) -1)
+    
+
+**Run Example**
+You can launch a run for projectConfig.py using the following commandline:
+    
+    mkdir RNASeq-Analysis
+    cd RNASeq-Analysis
+   
+    [RNASeq-Analysis]$ projectConfig.py -i /storage/DATA/annotatedData/74/genecall/RNAseq_74_all/heatshock -p testDir -r pe -d prokaryote -g yes -o 74Testsymlink -e tsucheta@gmail.com
+
+
+Make sure your input directory contains all the data including the RNAseq files, genome fasta file and annotation file. Once this commandline is executed, the script is going to iterate over the files in the directory and asks for user input such as whether the read type is pe, genome or annotation type or if the user wants to exclude the files from data analysis. The workflow takes 2 conditions at a time and generates conditions based on the file pre-fixes. When providing conditions as input make sure to only provide alphanumeric characters. Providing a "-" or "_"  may not work. In case, the file name pre-fixes are in-correct, then one needs to fix it at this time. Also make sure you are not including more than one condition. In that case, the program will exit with error.
 
 Commands to run Metagenome Analysis Workflow
 --------------------------------------------
